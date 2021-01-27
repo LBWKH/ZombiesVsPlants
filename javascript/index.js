@@ -1,6 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const gameArea = document.getElementById("game-area");
 const startButton = document.getElementById("start-game");
 
 const backgroundImg = new Image();
@@ -56,9 +57,14 @@ class Zombie {
     this.height = 120;
     this.img = zombieImg;
     this.speed = 0;
+    // this.attackDamage = attackDamage;
   }
   newPos() {
     this.y += this.speed;
+  }
+
+  shoot(shooter) {
+    shootsArr.unshift(new Cookie(shooter, this.attackDamage, this.x, this.y));
   }
 
   draw() {
@@ -67,13 +73,13 @@ class Zombie {
 }
 
 class Plant {
-  constructor(y) {
-    this.x = 400;
+  constructor(y, speed) {
+    this.x = 430;
     this.y = y;
-    this.width = 90;
-    this.height = 120;
+    this.width = 70;
+    this.height = 90;
     this.img = plantImg;
-    this.speed = 0;
+    this.speed = speed;
   }
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -85,12 +91,13 @@ class Plant {
 }
 
 class Cookie {
-  constructor(y) {
+  constructor(y, damage) {
     this.x = 50;
     this.y = y;
     this.width = 25;
     this.height = 20;
     this.img = cookieImg;
+    this.damage = damage;
   }
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -98,12 +105,33 @@ class Cookie {
   move() {
     this.x += 5;
   }
-  collision(obstacle) {
+
+  left() {
+    return this.x;
+  }
+
+  right() {
+    return this.x + this.width;
+  }
+
+  top() {
+    return this.y;
+  }
+
+  bottom() {
+    return this.y + this.height;
+  }
+
+  crashWith(obstacle) {
+    if (obstacle.health <= 0) {
+      return false;
+    }
+
     return !(
-      this.x < obstacle.x ||
-      this.x > obstacle.x ||
-      this.y < obstacle.y ||
-      this.y > obstacle.y
+      this.bottom() < obstacle.top() ||
+      this.top() > obstacle.bottom() ||
+      this.right() < obstacle.left() ||
+      this.left() > obstacle.right()
     );
   }
 }
@@ -130,31 +158,33 @@ class Game {
   spawnPlants = () => {
     this.frames++;
     this.plantTeam.map((plant) => {
-      plant.move();
       plant.draw();
+      plant.move();
     });
 
-    if (this.frames % 90 === 0) {
-      let x = 100;
+    if (this.frames % 180 === 0) {
+      let x = 200;
 
       let minY = 0;
-      let maxY = canvas.height - 80;
-      let y = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+      let maxY = canvas.height - 150;
+      let y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
 
-      const plant = new Plant(x, y, 90, 120);
+      const plant = new Plant(y, -0.5);
 
       this.plantTeam.push(plant);
     }
   };
-  shoot = () => {
-    shootsArr.push(new Cookie());
-    shoots--;
-  };
+  // shoot = () => {
+  //   shootsArr.push(new Cookie());
+  //   shoots--;
+  // };
 
   checkGameOver = () => {
-    const invaded = this.plants.some((obstacle) => {
-      return this.player.isCrashedWith(obstacle);
-    });
+    if (this.plant.x === 0) {
+      return true;
+    } else {
+      return false;
+    }
   };
 }
 
