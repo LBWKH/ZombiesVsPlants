@@ -17,6 +17,8 @@ cookieImg.src = "images/cookiePink.png";
 
 let frames = 0;
 let score = 0;
+let shoots = 1000;
+let shootsArr = [];
 
 class Background {
   constructor() {
@@ -27,7 +29,7 @@ class Background {
     this.img = backgroundImg;
     this.speed = 3;
   }
-  
+
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
@@ -75,8 +77,8 @@ class Plant {
   }
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-
   }
+
   move() {
     this.x += this.speed;
   }
@@ -84,7 +86,7 @@ class Plant {
 
 class Cookie {
   constructor(y) {
-    this.x = 40;
+    this.x = 50;
     this.y = y;
     this.width = 25;
     this.height = 20;
@@ -93,20 +95,32 @@ class Cookie {
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
+  move() {
+    this.x += 5;
+  }
+  collision(obstacle) {
+    return !(
+      this.x < obstacle.x ||
+      this.x > obstacle.x ||
+      this.y < obstacle.y ||
+      this.y > obstacle.y
+    );
+  }
 }
 
 class Game {
   constructor(zombie, background) {
     this.zombie = zombie;
     this.background = background;
+    this.frames = 0;
     this.animationId = 0;
     this.plantTeam = [];
-
   }
   updateGameArea = () => {
     ctx.clearRect(0, 0, 500, 460);
 
     this.background.draw();
+    this.spawnPlants();
 
     this.zombie.newPos();
     this.zombie.draw();
@@ -114,12 +128,38 @@ class Game {
     this.animationId = requestAnimationFrame(this.updateGameArea);
   };
   spawnPlants = () => {
+    this.frames++;
+    this.plantTeam.map((plant) => {
+      plant.move();
+      plant.draw();
+    });
 
-  }
+    if (this.frames % 90 === 0) {
+      let x = 100;
+
+      let minY = 0;
+      let maxY = canvas.height - 80;
+      let y = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+
+      const plant = new Plant(x, y, 90, 120);
+
+      this.plantTeam.push(plant);
+    }
+  };
+  shoot = () => {
+    shootsArr.push(new Cookie());
+    shoots--;
+  };
+
+  checkGameOver = () => {
+    const invaded = this.plants.some((obstacle) => {
+      return this.player.isCrashedWith(obstacle);
+    });
+  };
 }
 
 window.onload = () => {
-  ctx.drawImage(backgroundImg, 0, 30, 500, 400);
+  ctx.drawImage(backgroundImg, 0, 0, 500, 460);
 
   startButton.addEventListener("click", (event) => {
     startGame();
@@ -136,28 +176,20 @@ window.onload = () => {
     const game = new Game(zombie, background);
 
     game.updateGameArea();
+    game.spawnPlants();
 
     document.addEventListener("keydown", (e) => {
-      // [TESTE]
-      // if (e.key === "ArrowUp") {
-      //   console.log("arrow-up");
-      //   console.log(zombie.y);
-      //   zombie.y -= 20;
-      // break;
-      //       }
-      //     });
-      //   }
-      // };
       switch (e.key) {
         case "ArrowUp": // to move Up
           console.log("arrow-Up");
-          game.zombie.y -= 20;
+          game.zombie.y -= 35;
           break;
         case "ArrowDown": // to move Down
-          game.zombie.y += 20;
+          game.zombie.y += 35;
           break;
-        case 90: // Z to Shoot
-          // shoot();
+        case "z": // Z to Shoot
+          console.log("shooting");
+          game.shoot();
           break;
       }
     });
