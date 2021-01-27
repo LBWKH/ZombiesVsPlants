@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 h1 {
@@ -12,13 +12,13 @@ h1 {
   font-size: 400%;
   flex-direction: row;
   justify-content: center;
-  margin: 1% 0%;
+  margin: 0.6% 0%;
 }
 
 .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 #start-game {
@@ -29,7 +29,7 @@ h1 {
 }
 
 #reset {
-   font-family: "Bangers", cursive;
+  font-family: "Bangers", cursive;
   font-size: 200%;
   background-color: #9e0c38;
 }
@@ -43,7 +43,7 @@ h1 {
 #canvas {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start
+  justify-content: flex-start;
   align-items: center;
 }
 

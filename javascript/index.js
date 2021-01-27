@@ -17,6 +17,13 @@ plantImg.src = "images/plant.png";
 const cookieImg = new Image();
 cookieImg.src = "images/cookiePink.png";
 
+const gameOverImg = new Image();
+gameOverImg.src = "images/game-over.png";
+
+let backgroundSound = "sounds/background-music.mp3";
+let slimeSound = "slime.wav";
+let gameOverSound = "gameover.wav";
+
 let frames = 0;
 let score = 0;
 
@@ -28,6 +35,8 @@ class Background {
     this.height = 460;
     this.img = backgroundImg;
     this.speed = 3;
+    this.sound = new Audio();
+    this.sound.src = backgroundSound;
   }
 
   clear() {
@@ -99,6 +108,8 @@ class Plant {
   }
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    // if (this.x < 0) {
+    //   gameOver();
   }
 
   move() {
@@ -214,12 +225,12 @@ class Game {
       plant.move();
     });
 
-    if (this.frames % 180 === 0) {
+    if (this.frames % 90 === 0) {
       let minY = 0;
       let maxY = canvas.height - 150;
       let y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
 
-      const plant = new Plant(y, -0.8, 100);
+      const plant = new Plant(y, -1.5, 100);
 
       this.plantTeam.push(plant);
     }
@@ -255,9 +266,11 @@ class Game {
 
   checkGameOver = () => {
     for (let i = 0; i < this.plantTeam.length; i++) {
-      if (this.plantTeam[i].x === 0) {
-        console.log("ta funcionando?");
+      if (this.plantTeam[i].x < 0) {
         cancelAnimationFrame(this.animationId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(gameOverImg, 0, 0, 500, 460);
+        // this.updateScore.stop();
       }
     }
   };
@@ -275,8 +288,6 @@ window.onload = () => {
   });
 
   function startGame() {
-    let randomPlace = Math.floor(Math.random() * (460 - 200));
-
     const zombie = new Zombie();
     const background = new Background();
 
@@ -284,6 +295,13 @@ window.onload = () => {
 
     game.updateGameArea();
     game.spawnPlants();
+
+    // gameOver = () => {
+    //   cancelAnimationFrame(game.animationId);
+    //   game.spawnPlants.stop();
+    //   ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //   ctx.drawImage(gameOverImg, 0, 0, 500, 460);
+    // };
 
     document.addEventListener("keydown", (e) => {
       switch (e.key) {
