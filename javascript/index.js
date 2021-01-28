@@ -5,14 +5,50 @@ const gameArea = document.getElementById("game-area");
 const startButton = document.getElementById("start-game");
 const resetButton = document.getElementById("reset");
 
+const backgroundAudio = new Audio();
+backgroundAudio.src = "sounds/background-music.mp3";
+backgroundAudio.volume = 0.3;
+
+const gameOverAudio = new Audio();
+gameOverAudio.src = "sounds/gameover.wav";
+gameOverAudio.volume = 0.7;
+
+const slimeAudio = new Audio();
+slimeAudio.src = "sounds/slime.wav";
+slimeAudio.volume = 1.0;
+
 const backgroundImg = new Image();
 backgroundImg.src = "images/grassBackground.jpg";
 
-const zombieImg = new Image();
-zombieImg.src = "images/zombie.png";
+const zombieImg1 = new Image();
+zombieImg1.src = "images/Attack1.png";
 
-const plantImg = new Image();
-plantImg.src = "images/plant.png";
+const zombieImg2 = new Image();
+zombieImg2.src = "images/Attack2.png";
+
+const zombieImg3 = new Image();
+zombieImg3.src = "images/Attack3.png";
+
+const zombieImg4 = new Image();
+zombieImg4.src = "images/Attack4.png";
+
+const zombieImg5 = new Image();
+zombieImg5.src = "images/Attack5.png";
+
+const zombieImg6 = new Image();
+zombieImg6.src = "images/Attack6.png";
+
+const zombieImg7 = new Image();
+zombieImg7.src = "images/Attack7.png";
+
+const zombieImg8 = new Image();
+zombieImg8.src = "images/Attack8.png";
+
+const plantImg1 = new Image();
+plantImg1.src = "images/plant1.png";
+
+const plantImg2 = new Image();
+plantImg2.src = "images/plant2.png";
 
 const cookieImg = new Image();
 cookieImg.src = "images/cookiePink.png";
@@ -20,10 +56,7 @@ cookieImg.src = "images/cookiePink.png";
 const gameOverImg = new Image();
 gameOverImg.src = "images/game-over.png";
 
-let backgroundSound = "sounds/background-music.mp3";
-let slimeSound = "slime.wav";
-let gameOverSound = "gameover.wav";
-
+let spriteCount = 0;
 let frames = 0;
 let score = 0;
 
@@ -36,7 +69,6 @@ class Background {
     this.img = backgroundImg;
     this.speed = 3;
     this.sound = new Audio();
-    this.sound.src = backgroundSound;
   }
 
   clear() {
@@ -58,58 +90,76 @@ class Background {
 }
 
 class Zombie {
-  constructor() {
+  constructor(spriteCount) {
     this.x = 30;
     this.y = 110;
     this.width = 90;
     this.height = 120;
-    this.img = zombieImg;
     this.speed = 0;
+    this.spriteCount = 0;
   }
   newPos() {
     this.y += this.speed;
   }
 
-  // shoot(shooter) {
-  //   shootsArr.unshift(new Cookie(shooter, this.attackDamage, this.x, this.y));
-  // }
-
   shoot = (shootsArr) => {
-    // shootsArr.push(new Cookie());
-    // shoots--;
-    // if (this.frames % 20 === 0) {
-    //   let shootX = 50;
-
-    // let minY = 0;
-    // let maxY = canvas.height - 150;
-    // let y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
-
     const cookie = new Cookie(this.x + 50, this.y + 45, 1.5, 33.34);
     shootsArr.push(cookie);
-
-    // this.plantTeam.push(plant);
-    // }
   };
 
   draw() {
-    ctx.drawImage(this.img, this.x, this.y, 90, 120);
+    if (this.spriteCount < 4) {
+      ctx.drawImage(zombieImg1, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 8) {
+      ctx.drawImage(zombieImg2, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 12) {
+      ctx.drawImage(zombieImg3, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 16) {
+      ctx.drawImage(zombieImg4, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 20) {
+      ctx.drawImage(zombieImg5, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 24) {
+      ctx.drawImage(zombieImg6, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 28) {
+      ctx.drawImage(zombieImg7, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 32) {
+      ctx.drawImage(zombieImg8, this.x, this.y, 90, 120);
+      this.spriteCount += 1;
+    } else {
+      ctx.drawImage(zombieImg1, this.x, this.y, 90, 120);
+      this.spriteCount = 0;
+    }
   }
 }
 
 class Plant {
-  constructor(y, speed, health) {
+  constructor(y, speed, health, spriteCount) {
     this.x = 430;
     this.y = y;
     this.width = 70;
     this.height = 90;
-    this.img = plantImg;
     this.speed = speed;
     this.health = health;
+    this.spriteCount = 0;
   }
   draw() {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    // if (this.x < 0) {
-    //   gameOver();
+    if (this.spriteCount < 6) {
+      ctx.drawImage(plantImg1, this.x, this.y, this.width, this.height);
+      this.spriteCount += 1;
+    } else if (this.spriteCount < 16) {
+      ctx.drawImage(plantImg2, this.x, this.y, this.width, this.height);
+      this.spriteCount += 1;
+    } else {
+      ctx.drawImage(plantImg1, this.x, this.y, this.width, this.height);
+      this.spriteCount = 0;
+    }
   }
 
   move() {
@@ -199,6 +249,7 @@ class Game {
     ctx.clearRect(0, 0, 500, 460);
 
     this.background.draw();
+    backgroundAudio.play();
     this.spawnPlants();
 
     this.zombie.newPos();
@@ -207,11 +258,11 @@ class Game {
     this.updateShots();
 
     this.checkCollision();
-    this.checkGameOver();
 
     this.updateScore(this.score);
 
     this.animationId = requestAnimationFrame(this.updateGameArea);
+    this.checkGameOver();
   };
   spawnPlants = () => {
     this.frames++;
@@ -230,7 +281,7 @@ class Game {
       let maxY = canvas.height - 150;
       let y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
 
-      const plant = new Plant(y, -1.5, 100);
+      const plant = new Plant(y, -2.0, 100);
 
       this.plantTeam.push(plant);
     }
@@ -240,6 +291,7 @@ class Game {
     this.shootsArr.map((shoot) => {
       shoot.draw();
       shoot.move();
+      slimeAudio.play();
     });
   };
 
@@ -247,7 +299,7 @@ class Game {
     ctx.font = "20px Bangers";
     ctx.fillStyle = "white";
 
-    ctx.fillText(`Score ${this.score}`, 70, 20);
+    ctx.fillText(`Score :  ${this.score}`, 70, 20);
   };
 
   checkCollision = () => {
@@ -270,7 +322,11 @@ class Game {
         cancelAnimationFrame(this.animationId);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(gameOverImg, 0, 0, 500, 460);
-        // this.updateScore.stop();
+        backgroundAudio.pause();
+        gameOverAudio.play();
+        ctx.font = "20px Bangers";
+        ctx.fillStyle = "white";
+        ctx.fillText(`Score :  ${this.score}`, 70, 20);
       }
     }
   };
@@ -288,32 +344,23 @@ window.onload = () => {
   });
 
   function startGame() {
-    const zombie = new Zombie();
+    const zombie = new Zombie(0);
     const background = new Background();
-
+    spriteCount = 0;
     const game = new Game(zombie, background);
 
     game.updateGameArea();
     game.spawnPlants();
 
-    // gameOver = () => {
-    //   cancelAnimationFrame(game.animationId);
-    //   game.spawnPlants.stop();
-    //   ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //   ctx.drawImage(gameOverImg, 0, 0, 500, 460);
-    // };
-
     document.addEventListener("keydown", (e) => {
       switch (e.key) {
-        case "ArrowUp": // to move Up
-          console.log("arrow-Up");
+        case "ArrowUp":
           game.zombie.y -= 35;
           break;
-        case "ArrowDown": // to move Down
+        case "ArrowDown":
           game.zombie.y += 35;
           break;
-        case "z": // Z to Shoot
-          console.log("shooting");
+        case "z":
           game.zombie.shoot(game.shootsArr);
           break;
       }
