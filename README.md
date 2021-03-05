@@ -1,4 +1,4 @@
-<img alt="PCKR Logo" src="https://github.com/LBWKH/ZombiesVsPlants/blob/master/images/zvsplogo.png" width="600px"/>
+<img alt="PCKR Logo" src="https://github.com/LBWKH/ZombiesVsPlants/blob/master/images/zvsplogo.png" width="800px"/>
 
 *ZOMBIES vs PLANTS* is the first project built in IronHack's WebDevelopment program. 
 HTML, CSS, canvas and JavaScript were used for its construction.
