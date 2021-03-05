@@ -16,7 +16,7 @@ Click [here](https://lbwkh.github.io/ZombiesVsPlants/) to play!
 
 ## AUTHOR
 
-- [Leonard Kim Her](https://github.com/LBWKH)
+[Leonard Kim Her](https://github.com/LBWKH)
 
 ## Presentation Slides
 
