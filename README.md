@@ -1,6 +1,8 @@
-# ZOMBIES vs PLANTS
+<img alt="PCKR Logo" src="https://github.com/LBWKH/ZombiesVsPlants/blob/master/images/zvsplogo.png" width="600px"/>
 
-*ZOMBIES vs PLANTS* is a game built in HTML, CSS, canvas and JavaScript.
+*ZOMBIES vs PLANTS* is the first project built in IronHack's WebDevelopment program. 
+HTML, CSS, canvas and JavaScript were used for its construction.
+
 Click [here](https://lbwkh.github.io/ZombiesVsPlants/) to play!
 
 # GAME INSTRUCTIONS
@@ -12,3 +14,10 @@ Click [here](https://lbwkh.github.io/ZombiesVsPlants/) to play!
  - If you lost, click **RESET** and **START GAME** to play again!
  - The game contains sound effects
 
+## AUTHOR
+
+- [Leonard Kim Her](https://github.com/LBWKH)
+
+## Presentation Slides
+
+[Google Slides](https://docs.google.com/presentation/d/16NmRMWV_TB5S7pz-A7chekpY9_hrcyGqNzGDJxQW8S8/edit?usp=sharing)
